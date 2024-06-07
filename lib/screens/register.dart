@@ -1,17 +1,20 @@
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:projectgetx/db/functions.dart';
+import 'package:projectgetx/db/model.dart';
 
 class Register extends StatelessWidget {
   Register({super.key});
 
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-   final TextEditingController nameController = TextEditingController();
-   final TextEditingController batchController = TextEditingController();
-   final TextEditingController domainController = TextEditingController();
-  //  late StudentProvider studentProvider;
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController batchController = TextEditingController();
+  final TextEditingController domainController = TextEditingController();
+  late StudentController studentController;
   @override
   Widget build(BuildContext context) {
-    //  studentProvider=Provider.of<StudentProvider>(context) ;
+    studentController = Get.find<StudentController>();
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -33,11 +36,11 @@ class Register extends StatelessWidget {
                     InkWell(
                       child: const CircleAvatar(
                         radius: 50,
-                        child:Icon(Icons.add_photo_alternate) ,
+                        child: Icon(Icons.add_photo_alternate),
                       ),
                       onTap: () {},
                     ),
-                    const SizedBox( height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: nameController,
                       decoration: const InputDecoration(
@@ -53,7 +56,7 @@ class Register extends StatelessWidget {
                         return null;
                       },
                     ),
-                    const SizedBox( height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: batchController,
                       decoration: const InputDecoration(
@@ -69,7 +72,7 @@ class Register extends StatelessWidget {
                         return null;
                       },
                     ),
-                    const SizedBox( height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: domainController,
                       decoration: const InputDecoration(
@@ -85,7 +88,7 @@ class Register extends StatelessWidget {
                         return null;
                       },
                     ),
-                    const SizedBox( height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                         onPressed: () {
                           savestudent(context);
@@ -109,19 +112,16 @@ class Register extends StatelessWidget {
     final name = nameController.text.trim();
     final batch = batchController.text.trim();
     final domain = domainController.text.trim();
-    
 
-    // if (formkey.currentState!.validate()) {
-    //   final student = StudentModel(name: name, batch: batch, domain: domain
-    //      );
-        
-    //     studentProvider.addStudent(student);
-      
-    //   Navigator.of(context).pop();
-    //   nameController.text = '';
-    //   batchController.text = '';
-    //   domainController.text = '';
-    // }
+    if (formkey.currentState!.validate()) {
+      final student = StudentModel(name: name, batch: batch, domain: domain);
+
+      studentController.addStudent(student);
+
+      Get.back();
+      nameController.text = '';
+      batchController.text = '';
+      domainController.text = '';
+    }
   }
 }
-
