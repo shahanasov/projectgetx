@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projectgetx/db/functions.dart';
 import 'package:projectgetx/screens/details.dart';
+import 'package:projectgetx/screens/edit.dart';
 import 'package:projectgetx/screens/register.dart';
 
 class HomePage extends StatelessWidget {
@@ -30,11 +31,6 @@ class HomePage extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 10),
                     child: ListTile(
                       onTap: () {
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (context) => DetailsPage(
-                        //           studentModel:
-                        //               studentController.studentList[index],
-                        //         )));
                         Get.to(() => DetailsPage(
                               studentModel:
                                   studentController.studentList[index],
@@ -43,6 +39,28 @@ class HomePage extends StatelessWidget {
                       title: Text(controller.studentList[index].name),
                       leading: const CircleAvatar(),
                       subtitle: Text(controller.studentList[index].batch),
+                      trailing: PopupMenuButton<String>(
+                        onSelected: (String value) {},
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<String>>[
+                           PopupMenuItem<String>(
+                            onTap:  () {
+                              controller.deleteStudent(
+                                controller.studentList[index].key!);
+                            },
+                            value: 'option1',
+                            child: const Text('Delete'),
+                          ),
+                           PopupMenuItem<String>(
+                            onTap: () {
+                              Get.to(() => EditPage(studentModel: controller.studentList[index],)
+                            );
+                            },
+                            value: 'option2',
+                            child: const Text('Edit'),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 });

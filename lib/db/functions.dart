@@ -18,7 +18,20 @@ addStudent(StudentModel value)async{
 
   getAllDetails()async{
     final studentDb= await Hive.openBox<StudentModel>('studentDb');
+    studentList.clear();
     studentList.addAll(studentDb.values);
     update();
+  }
+
+   Future<void> deleteStudent(int id) async {
+    final studentDb = await Hive.openBox<StudentModel>('studentDb');
+    await studentDb.delete(id);
+    await getAllDetails();
+  }
+
+  Future updateStudent(StudentModel value,int key) async {
+    final studentDb = await Hive.openBox<StudentModel>('studentDb');
+    await studentDb.putAt(key, value);
+    await getAllDetails();
   }
  }

@@ -3,18 +3,25 @@ import 'package:get/get.dart';
 import 'package:projectgetx/db/functions.dart';
 import 'package:projectgetx/db/model.dart';
 
-class Register extends StatelessWidget {
-  Register({super.key});
+class EditPage extends StatelessWidget {
+  final StudentModel studentModel;
+  EditPage({super.key, required this.studentModel});
 
-StudentController studentController = Get.find<StudentController>();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController batchController = TextEditingController();
-  final TextEditingController domainController = TextEditingController();
-  // late StudentController studentController;
+
+  late TextEditingController nameController;
+  late TextEditingController batchController;
+  late TextEditingController domainController;
+
+  late StudentController studentController;
+
   @override
   Widget build(BuildContext context) {
-   
+    studentController = Get.find<StudentController>();
+
+    nameController = TextEditingController(text: studentModel.name);
+    batchController = TextEditingController(text: studentModel.batch);
+    domainController = TextEditingController(text: studentModel.domain);
 
     return Scaffold(
       appBar: AppBar(
@@ -92,7 +99,7 @@ StudentController studentController = Get.find<StudentController>();
                     const SizedBox(height: 20),
                     ElevatedButton(
                         onPressed: () {
-                          savestudent(context);
+                          editstudent(context, studentModel.key);
                           // Navigator.of(context).pop();
                         },
                         child: const Text('Register'))
@@ -109,7 +116,7 @@ StudentController studentController = Get.find<StudentController>();
   // validatingForm() {
   //   if (formkey.currentState!.validate()) {}
   // }
-  savestudent(context) {
+  editstudent(context, key) {
     final name = nameController.text.trim();
     final batch = batchController.text.trim();
     final domain = domainController.text.trim();
@@ -117,7 +124,7 @@ StudentController studentController = Get.find<StudentController>();
     if (formkey.currentState!.validate()) {
       final student = StudentModel(name: name, batch: batch, domain: domain);
 
-      studentController.addStudent(student);
+      studentController.updateStudent(student, key);
 
       Get.back();
       nameController.text = '';
