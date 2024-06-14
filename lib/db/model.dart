@@ -9,6 +9,7 @@ class StudentModel extends HiveObject{
   final String batch;
   @HiveField(2)
   final String domain;
-
-  StudentModel({required this.name, required this.batch, required this.domain});
+  @HiveField(3)
+  final String image;
+  StudentModel({required this.name, required this.batch, required this.domain, required this.image});
 }

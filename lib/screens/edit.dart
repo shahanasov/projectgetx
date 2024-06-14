@@ -122,7 +122,7 @@ class EditPage extends StatelessWidget {
     final domain = domainController.text.trim();
 
     if (formkey.currentState!.validate()) {
-      final student = StudentModel(name: name, batch: batch, domain: domain);
+      final student = StudentModel(name: name, batch: batch, domain: domain, image: '');
 
       studentController.updateStudent(student, key);
 

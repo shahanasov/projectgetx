@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projectgetx/db/functions.dart';
@@ -37,7 +39,7 @@ class HomePage extends StatelessWidget {
                             ));
                       },
                       title: Text(controller.studentList[index].name),
-                      leading: const CircleAvatar(),
+                      leading:  CircleAvatar(backgroundImage: FileImage(File(controller.studentList[index].image)),),
                       subtitle: Text(controller.studentList[index].batch),
                       trailing: PopupMenuButton<String>(
                         onSelected: (String value) {},

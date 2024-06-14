@@ -20,19 +20,22 @@ class StudentModelAdapter extends TypeAdapter<StudentModel> {
       name: fields[0] as String,
       batch: fields[1] as String,
       domain: fields[2] as String,
+      image: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, StudentModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
       ..write(obj.batch)
       ..writeByte(2)
-      ..write(obj.domain);
+      ..write(obj.domain)
+      ..writeByte(3)
+      ..write(obj.image);
   }
 
   @override

@@ -1,21 +1,27 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:projectgetx/db/functions.dart';
 import 'package:projectgetx/db/model.dart';
 
 class Register extends StatelessWidget {
   Register({super.key});
 
-StudentController studentController = Get.find<StudentController>();
+  StudentController studentController = Get.find<StudentController>();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController batchController = TextEditingController();
   final TextEditingController domainController = TextEditingController();
   // late StudentController studentController;
+
+  final ImagePicker imgpicker = ImagePicker();
+  XFile? imagefile;
+   late RxString imagefileobs = ''.obs;
+
   @override
   Widget build(BuildContext context) {
-   
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -35,14 +41,26 @@ StudentController studentController = Get.find<StudentController>();
                 child: Column(
                   children: [
                     InkWell(
-                      child: const CircleAvatar(
-                        radius: 50,
-                        child: Icon(Icons.add_photo_alternate),
-                      ),
-                      onTap: () {},
-                    ),
+                        onTap: () {
+                          uploadImage();
+                        },
+                        child:Obx(() => 
+                         imagefileobs.isNotEmpty
+                            ?  CircleAvatar(
+                                    radius: 80,
+                                    backgroundImage:
+                                        FileImage(File(imagefileobs.value)),
+                                  )
+                              
+                            
+                            : const CircleAvatar(
+                                radius: 80,
+                                child: Icon(Icons.add_a_photo_outlined),
+                              ))),
                     const SizedBox(height: 20),
                     TextFormField(
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.name,
                       controller: nameController,
                       decoration: const InputDecoration(
                           label: Text('Name'),
@@ -59,6 +77,7 @@ StudentController studentController = Get.find<StudentController>();
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      textCapitalization: TextCapitalization.characters,
                       controller: batchController,
                       decoration: const InputDecoration(
                           label: Text('Batch'),
@@ -75,6 +94,7 @@ StudentController studentController = Get.find<StudentController>();
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      textCapitalization: TextCapitalization.words,
                       controller: domainController,
                       decoration: const InputDecoration(
                           label: Text('Domain'),
@@ -115,7 +135,8 @@ StudentController studentController = Get.find<StudentController>();
     final domain = domainController.text.trim();
 
     if (formkey.currentState!.validate()) {
-      final student = StudentModel(name: name, batch: batch, domain: domain);
+      final student = StudentModel(
+          name: name, batch: batch, domain: domain, image: imagefile!.path);
 
       studentController.addStudent(student);
 
@@ -123,6 +144,14 @@ StudentController studentController = Get.find<StudentController>();
       nameController.text = '';
       batchController.text = '';
       domainController.text = '';
+    }
+  }
+
+  Future<void> uploadImage() async {
+    var pickedFile = await imgpicker.pickImage(source: ImageSource.gallery);
+    if(pickedFile!=null){
+      imagefile = pickedFile;
+      imagefileobs.value = imagefile!.path;
     }
   }
 }

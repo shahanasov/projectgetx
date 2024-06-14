@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:projectgetx/db/model.dart';
 
@@ -30,7 +32,7 @@ class DetailsPage extends StatelessWidget {
               AppBar(title: const Text('Student At Brototype'),
               automaticallyImplyLeading: false,centerTitle: true,),
               // const SizedBox(height: 20),
-              const CircleAvatar(radius: 80,),
+               CircleAvatar(backgroundImage: FileImage(File(studentModel.image)),radius: 80,),
               // const SizedBox(height: 20),
               Text(' Name : ${studentModel.name}',style: const TextStyle(fontSize: 30),),
               // const SizedBox(height: 20),
